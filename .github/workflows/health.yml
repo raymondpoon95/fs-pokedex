@@ -1,0 +1,15 @@
+name: Periodic Hello
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/1 * * * *'
+
+jobs:
+  health_check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check health of deployed service URL
+        uses: jtalk/url-health-check-action@v5
+        with:
+          url: https://fs-pokedex-d2k7.onrender.com
