@@ -1,9 +1,9 @@
 name: Periodic Hello
 
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: '*/1 * * * *'
+# on:
+#   workflow_dispatch:
+#   schedule:
+#     - cron: '*/1 * * * *'
 
 jobs:
   health_check:
