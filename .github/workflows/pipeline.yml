@@ -30,12 +30,15 @@ jobs:
       - name: Run npm build
         run: npm run build
       - name: Trigger Deployment
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
     
   tag_release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-latest  
+
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+        
     steps:
       - uses: actions/checkout@v6
       - name: Bump version and push tag
