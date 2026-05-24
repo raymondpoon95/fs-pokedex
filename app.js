@@ -12,6 +12,7 @@ app.get('/version', (req, res) => {
   res.send('1') // change this string to ensure a new version deployed
 })
 
+// health check api
 app.get('/health', (req, res) => {
   res.status(200).send('ok')
 })
