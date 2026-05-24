@@ -38,11 +38,36 @@ jobs:
     runs-on: ubuntu-latest  
 
     if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
-        
+
     steps:
       - uses: actions/checkout@v6
       - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.75.0
+        uses: anothrNick/github-tag-action@4ed44965e0db8dab2b466a16da04aec3cc312fd8
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
+
+  discord_notification:
+    needs: [simple_deployment_pipeline, tag_release]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Discord notification
+      - uses: actions/checkout@v6
+      - uses: sarisia/actions-status-discord@v1
+      - name: The job was successful
+        if: success()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          description: |
+            "✅ Build passed: ${{ github.sha }}"
+
+      - name: The job has failed
+        if: failure()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          description: |
+            "❌ Build failed: ${{ github.sha }}"
+
