@@ -12,6 +12,10 @@ app.get("/version", (req, res) => {
   res.send("1"); // change this string to ensure a new version deployed
 });
 
+app.get("/health", (req, res) => {
+  res.status(200).send("ok");
+});
+
 const start = async () => {
   await app.listen(PORT);
   console.log(`server started on port ${PORT}`);
