@@ -52,7 +52,6 @@ jobs:
 
     steps:
       - name: Discord notification
-      - uses: actions/checkout@v6
       - name: The job was successful
         uses: sarisia/actions-status-discord@v1
         if: success()
